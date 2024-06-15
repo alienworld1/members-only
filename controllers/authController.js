@@ -1,5 +1,6 @@
 const asyncHandler = require('express-async-handler');
 const bcrypt = require('bcryptjs');
+const passport = require('passport');
 
 const { body, validationResult } = require('express-validator');
 
@@ -10,14 +11,20 @@ exports.sign_up_get = asyncHandler(async(req, res) => {
 });
 
 exports.sign_up_post = [
-  body('first_name', 'The first name must be specified')
-    .isLength({min: 1}),
-  body('last_name', 'The last name must be specified')
-    .isLength({min: 1}),
+  body('first_name')
+    .isLength({min: 1})
+    .isAlpha()
+    .withMessage('The first name must be only comprised of alphabets.'),
+    body('last_name')
+    .isLength({min: 1})
+    .isAlpha()
+    .withMessage('The last name must be only comprised of alphabets.'),
   body('username')
     .trim()
     .isLength({min: 1, max: 16})
     .withMessage('The username must have 1-16 characters.')
+    .isAlphanumeric()
+    .withMessage('The username must not contain any special characters.')
     .custom(async value => {
       const userExists = await User.exists({username: value}).exec();
       if (userExists) {
@@ -56,6 +63,22 @@ exports.sign_up_post = [
     user.password = hashedPassword;
     await user.save();
 
-    res.redirect('/');
+    res.render('sign-up-success', {
+      title: 'Sign Up Successful'
+    });
   }),
 ];
+
+exports.log_in_get = asyncHandler(async(req, res) => {
+  res.render('log-in-form', {
+    title: 'Log In',
+    errors: req.session.messages,
+  });
+});
+
+exports.log_in_post = passport.authenticate('local', {
+  successRedirect: '/',
+  failureRedirect: '/log-in',
+  failureMessage: true,
+});
+
