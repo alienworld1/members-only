@@ -13,6 +13,8 @@ require('dotenv').config();
 
 const User = require('./models/user');
 const indexRouter = require('./routes/index');
+const postRouter = require('./routes/posts');
+const authMiddleware = require('./middleware/auth');
 
 const app = express();
 
@@ -75,6 +77,7 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
+app.use('/posts', authMiddleware.isUser, postRouter);
 
 app.use((req, res, next) =>  next(createError(404)));
 // eslint-disable-next-line no-unused-vars

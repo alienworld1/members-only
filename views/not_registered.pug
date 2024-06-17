@@ -1,0 +1,11 @@
+extends layout 
+
+block content
+  header(class="bg-slate-900 text-white py-4 px-8")
+    h1(class="text-3xl font-bold") Members Only
+  main(class="container mx-auto mt-8")
+    p(class="text-lg") You need to be registered to access this site.
+    div(class="mt-4")
+      a(class="text-purple-500 hover:underline", href="/log-in") Log In
+      |   or 
+      a(class="text-purple-500 hover:underline", href="/sign-up") Sign Up 

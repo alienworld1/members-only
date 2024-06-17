@@ -82,3 +82,7 @@ exports.log_in_post = passport.authenticate('local', {
   failureMessage: true,
 });
 
+exports.not_registered = asyncHandler(async(req, res) => {
+  res.render('not_registered', {title: 'Members Only'});
+});
+
