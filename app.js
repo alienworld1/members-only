@@ -8,6 +8,9 @@ const MongoStore = require('connect-mongo');
 const passport = require('passport');
 const LocalStrategy = require('passport-local').Strategy;
 const bcrypt = require('bcryptjs');
+const compression = require('compression');
+const helmet = require('helmet');
+const RateLimit = require('express-rate-limit');
 
 require('dotenv').config();
 
@@ -19,7 +22,9 @@ const { isUser, isMember } = require('./middleware/auth');
 
 const app = express();
 
-mongoose.connect(process.env.MONGODB_URL);
+mongoose.set('strictQuery', false);
+mongoose.connect(process.env.MONGODB_URL)
+  .catch(err => console.error(err));
 
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'pug');
@@ -75,6 +80,14 @@ passport.deserializeUser(async (id, done) => {
 app.use(express.json());
 app.use(express.urlencoded({extended: false}));
 app.use(cookieParser());
+
+app.use(helmet());
+app.use(RateLimit({
+  windowMs: 1 * 60 * 1000,
+  max: 100,
+}));
+app.use(compression());
+
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use((req, res, next) => {
@@ -98,5 +111,3 @@ app.use((err, req, res, next) => {
 
 const port = process.env.PORT || 3000;
 app.listen(port, () => console.log(`App listening on port ${port}!`));
-
-//TODO: minify tailwind in production
