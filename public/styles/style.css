@@ -618,6 +618,10 @@ video {
   margin-right: 1rem;
 }
 
+.mt-3 {
+  margin-top: 0.75rem;
+}
+
 .mt-4 {
   margin-top: 1rem;
 }
@@ -648,6 +652,10 @@ video {
 
 .max-w-md {
   max-width: 28rem;
+}
+
+.list-disc {
+  list-style-type: disc;
 }
 
 .appearance-none {
@@ -785,6 +793,10 @@ video {
 .py-8 {
   padding-top: 2rem;
   padding-bottom: 2rem;
+}
+
+.pl-4 {
+  padding-left: 1rem;
 }
 
 .text-center {

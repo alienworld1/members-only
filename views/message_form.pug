@@ -12,3 +12,8 @@ block content
         textarea(id="text", name="text", rows="4", class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline", placeholder="Write your message here")
       div(class="flex items-center justify-center")
         button(type="submit", class="bg-purple-500 hover:bg-purple-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline") Post Message
+    if errors
+      div(class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4 mt-3")
+        ul(class="list-disc pl-4")
+          each error in errors
+            li= error.msg
