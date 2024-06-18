@@ -4,7 +4,9 @@ const { body, validationResult } = require('express-validator');
 const Message = require('../models/message');
 
 exports.messages_get = asyncHandler(async(req, res) => {
-  res.render('messages', {title: 'Messages'});
+  const messages = await Message.find().populate({path: 'author', select: 'username'}).sort({timestamp: -1}).exec();
+
+  res.render('messages', {title: 'Messages', messages: messages});
 });
 
 exports.messages_create_get = asyncHandler(async(req, res) => {
