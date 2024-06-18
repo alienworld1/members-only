@@ -77,12 +77,21 @@ exports.log_in_get = asyncHandler(async(req, res) => {
 });
 
 exports.log_in_post = passport.authenticate('local', {
-  successRedirect: '/',
+  successRedirect: '/messages',
   failureRedirect: '/log-in',
   failureMessage: true,
 });
 
 exports.not_registered = asyncHandler(async(req, res) => {
   res.render('not_registered', {title: 'Members Only'});
+});
+
+exports.log_out = asyncHandler(async(req, res, next) => {
+  req.logout(err => {
+    if (err) {
+      return next(err);
+    } 
+    res.redirect('/not-registered');
+  });
 });
 
