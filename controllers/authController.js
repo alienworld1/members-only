@@ -1,3 +1,5 @@
+require('dotenv').config();
+  
 const asyncHandler = require('express-async-handler');
 const bcrypt = require('bcryptjs');
 const passport = require('passport');
@@ -95,3 +97,25 @@ exports.log_out = asyncHandler(async(req, res, next) => {
   });
 });
 
+exports.join_the_club_get = asyncHandler(async(req, res) => {
+  if (req.user.status != 'External') {
+    res.redirect('/messages');
+  } else {
+    res.render('join-the-club', {title: 'Become a Member'});
+  }
+});
+
+exports.join_the_club_post = asyncHandler(async(req, res) => {
+  if (req.user.status != 'External') {
+    res.redirect('/messages');
+    return;
+  }
+  
+  if (req.body.passkey != process.env.MEMBER_PASSKEY) {
+    res.render('join-the-club', {title: 'Become a Member', error: true});
+    return;
+  }
+
+  req.user = await User.findByIdAndUpdate(req.user.id, {status: 'Member'});
+  res.redirect('/messages');
+});

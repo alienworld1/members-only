@@ -14,4 +14,7 @@ router.get('/log-out', authController.log_out);
 
 router.get('/not-registered', authController.not_registered);
 
+router.get('/join-the-club', isUser, authController.join_the_club_get);
+router.post('/join-the-club', isUser, authController.join_the_club_post);
+
 module.exports = router;
