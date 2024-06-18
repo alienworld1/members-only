@@ -14,3 +14,12 @@ exports.isMember = async (req, res, next) => {
     next();
   }
 }
+
+exports.isAdmin = async (req, res, next) => {
+  // The isMember middleware should be used prior to this method
+  if (req.user.status === 'Admin') {
+    next();
+  } else {
+    res.redirect('/admin');
+  }
+}

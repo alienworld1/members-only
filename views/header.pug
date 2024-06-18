@@ -3,4 +3,6 @@ header.bg-slate-900.text-white.py-4.px-6.flex.justify-between.items-center
   div
     if currentUser.status === 'External'
       a(href='/join-the-club' class='text-sm mr-4 hover:underline') Become a Member
+    if currentUser.status === 'Member'
+      a(href='/admin' class='text-sm mr-4 hover:underline') Become an Admin 
     a(href='/log-out' class=' text-sm mr-4 hover:underline') Log Out

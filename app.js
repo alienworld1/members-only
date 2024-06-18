@@ -14,7 +14,8 @@ require('dotenv').config();
 const User = require('./models/user');
 const indexRouter = require('./routes/index');
 const messageRouter = require('./routes/messages');
-const { isUser } = require('./middleware/auth');
+const adminRouter = require('./routes/admin');
+const { isUser, isMember } = require('./middleware/auth');
 
 const app = express();
 
@@ -83,6 +84,7 @@ app.use((req, res, next) => {
 
 app.use('/', indexRouter);
 app.use('/messages', isUser, messageRouter);
+app.use('/admin', isUser, isMember, adminRouter);
 
 app.use((req, res, next) =>  next(createError(404)));
 // eslint-disable-next-line no-unused-vars
